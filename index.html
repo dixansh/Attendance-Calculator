@@ -4,22 +4,29 @@
     <meta name="google-site-verification" content="ZbF-XY8vO_fcRmppe3CDMaX6AqzeRB-GZLJ0dsvp7v8" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Attendance Planner</title>
+    
+    <title>Advanced Attendance Calculator & Planner | 75% Criteria Track</title>
+    <meta name="description" content="Free premium attendance calculator and planner for college students. Track target criteria like 75%, plan future leaves, and check recovery timelines automatically.">
+    <meta name="keywords" content="attendance calculator, attendance planner, 75 attendance calculator, college attendance tracker, leave planner">
+    
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --success: #16a34a;
-            --warning: #ca8a04;
-            --danger: #dc2626;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             --bg: #f8fafc;
             --card: #ffffff;
             --text: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --focus-ring: rgba(79, 70, 229, 0.15);
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: radial-gradient(at top right, #e0e7ff 0%, var(--bg) 100%);
             color: var(--text);
             margin: 0;
             padding: 40px 20px;
@@ -31,115 +38,142 @@
 
         .calculator-card {
             background: var(--card);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            max-width: 520px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+            max-width: 540px;
             width: 100%;
-            text-align: center;
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         h1 {
             color: var(--text);
-            font-size: 1.5rem;
+            font-size: 1.75rem;
+            font-weight: 800;
             margin-top: 0;
-            margin-bottom: 25px;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+            text-align: center;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
             text-align: left;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         label {
             font-size: 0.875rem;
             font-weight: 600;
-            margin-bottom: 6px;
-            color: #475569;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            letter-spacing: -0.01em;
         }
 
         input, select {
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
             outline: none;
-            background-color: white;
+            background-color: #ffffff;
+            color: var(--text);
+            transition: all 0.2s ease;
         }
 
         input:focus, select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        input::placeholder {
+            color: #94a3b8;
         }
 
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
         }
 
         .calc-btn { background-color: var(--primary); margin-top: 10px; }
-        .calc-btn:hover { background-color: var(--primary-hover); }
+        .calc-btn:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+        .calc-btn:active { transform: translateY(0); }
 
         .choice-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 16px;
+            margin-top: 24px;
         }
 
         .secondary-btn {
-            background-color: #f1f5f9;
-            color: #334155;
-            font-size: 0.95rem;
-            padding: 11px;
+            background-color: #f8fafc;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding: 14px;
             font-weight: 600;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            line-height: 1.4;
         }
-        .secondary-btn:hover { background-color: #e2e8f0; }
-        .btn-active { background-color: #334155; color: white; border-color: #334155; }
-        .btn-active:hover { background-color: #1e293b; }
+        .secondary-btn:hover { background-color: #f1f5f9; color: var(--text); border-color: #cbd5e1; }
+        .btn-active { background-color: #0f172a; color: white; border-color: #0f172a; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2); }
+        .btn-active:hover { background-color: #1e293b; color: white; }
 
         .toggle-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             margin-top: 4px;
         }
 
         .toggle-btn {
-            padding: 12px;
+            padding: 14px;
             font-weight: 600;
-            background: white;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             cursor: pointer;
-            color: #475569;
-            font-size: 0.95rem;
-            transition: all 0.2s;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
         }
         .toggle-btn:hover { background-color: #f8fafc; }
         .toggle-active {
-            background-color: #e0f2fe;
-            border-color: #0284c7;
-            color: #0369a1;
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+            color: #1d4ed8;
         }
 
         .result-section, .panel-section, .report-box {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid #f1f5f9;
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
             display: none;
             text-align: left;
         }
@@ -147,87 +181,108 @@
         .result-section { text-align: center; }
 
         .percentage {
-            font-size: 3rem;
-            font-weight: 800;
-            margin: 10px 0;
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 8px 0;
+            letter-spacing: -0.04em;
         }
 
         .status-message {
-            font-weight: 600;
-            font-size: 1rem;
-            padding: 8px 16px;
-            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            padding: 8px 18px;
+            border-radius: 100px;
             display: inline-block;
-            margin-top: 5px;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .status-pass { background-color: #dcfce7; color: var(--success); }
-        .status-fail { background-color: #fee2e2; color: var(--danger); }
+        .status-pass { background-color: #d1fae5; color: #065f46; }
+        .status-fail { background-color: #fee2e2; color: #991b1b; }
         
         .error-message {
             color: var(--danger);
             font-size: 0.9rem;
-            font-weight: 500;
-            margin-top: 20px;
+            font-weight: 600;
+            margin-top: 24px;
             display: none;
             text-align: center;
+            padding: 12px;
+            background-color: #fef2f2;
+            border-radius: 12px;
+            border: 1px dashed #fca5a5;
         }
 
         .highlight-box {
             background-color: #f8fafc;
             border-left: 4px solid var(--primary);
-            padding: 15px;
-            border-radius: 0 8px 8px 0;
-            margin-top: 12px;
+            padding: 18px;
+            border-radius: 0 16px 16px 0;
+            margin-top: 16px;
             font-weight: 500;
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
 
         .leave-row {
             display: grid;
             grid-template-columns: 1fr 1fr auto;
-            gap: 10px;
+            gap: 12px;
             align-items: end;
             background: #f8fafc;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
         }
 
         .add-row-btn {
-            background-color: #e2e8f0;
-            color: #334155;
-            padding: 8px 12px;
-            font-size: 0.9rem;
-            border-radius: 6px;
-            border: none;
+            background-color: #f1f5f9;
+            color: var(--text-secondary);
+            padding: 10px 16px;
+            font-size: 0.875rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
             cursor: pointer;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: inline-block;
+            transition: all 0.2s ease;
         }
-        .add-row-btn:hover { background-color: #cbd5e1; }
+        .add-row-btn:hover { background-color: #e2e8f0; color: var(--text); }
 
         .remove-row-btn {
             background-color: #fee2e2;
             color: var(--danger);
             border: none;
-            padding: 12px;
-            border-radius: 6px;
+            padding: 14px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.2s ease;
         }
         .remove-row-btn:hover { background-color: #fecaca; }
 
+        .panel-title {
+            margin-top: 0; 
+            margin-bottom: 20px;
+            color: var(--text);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
         .credits-footer {
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px dashed #cbd5e1;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
             font-size: 0.85rem;
-            color: #64748b;
+            color: #94a3b8;
+            line-height: 1.5;
         }
         .credits-footer strong {
-            color: #334155;
+            color: var(--text-secondary);
         }
     </style>
 </head>
@@ -235,6 +290,7 @@
 
 <div id="calcCard" class="calculator-card">
     <h1>📊 Attendance Planner</h1>
+    <div class="subtitle">Smart track criteria benchmarks & leaves</div>
     
     <div class="input-group">
         <label for="totalClasses">Total Classes Conducted (As of Today)</label>
@@ -243,14 +299,14 @@
     
     <div class="input-group">
         <label for="attendedClasses">Classes Attended (As of Today)</label>
-        <input type="number" id="attendedClasses" placeholder="e.g. 100">
+        <input type="number" id="attendedClasses" placeholder="e.g. 75">
     </div>
 
     <button id="calcBtn" class="btn calc-btn">Calculate Attendance</button>
     <div id="errorBox" class="error-message"></div>
 
     <div id="resultBox" class="result-section">
-        <label style="color:#64748b; font-weight:600;">CURRENT ATTENDANCE</label>
+        <label style="color:#64748b; font-weight:700; font-size: 0.75rem; letter-spacing: 0.05em;">CURRENT ATTENDANCE</label>
         <div id="displayPct" class="percentage">0.00%</div>
         <div id="displayStatus" class="status-message"></div>
         
@@ -261,7 +317,7 @@
     </div>
 
     <div id="recoveryPanel" class="panel-section" style="display:none;">
-        <h3 style="margin-top:0; color:#334155;">📈 Attendance Recovery</h3>
+        <h3 class="panel-title">📈 Attendance Recovery</h3>
         <div class="input-group">
             <label for="recoveryClassesPerDay">Number of Classes Held Per Day</label>
             <input type="number" id="recoveryClassesPerDay" value="6" min="1">
@@ -272,7 +328,7 @@
     </div>
 
     <div id="leavesPanel" class="panel-section" style="display:none;">
-        <h3 style="margin-top:0; color:#334155; border-bottom: 2px solid #f1f5f9; padding-bottom:8px;">📅 Leave Planning</h3>
+        <h3 class="panel-title" style="border-bottom: 1px solid var(--border); padding-bottom:12px;">📅 Leave Planning</h3>
         
         <div class="input-group">
             <label for="leaveClassesPerDay">Number of Classes Held Per Day</label>
@@ -301,7 +357,7 @@
         </div>
 
         <div id="calendarInputGroup">
-            <label style="font-size: 0.875rem; font-weight: 600; color: #475569; display:block; margin-bottom:6px;">Add Leave Windows (Unselected future days mark as attended):</label>
+            <label style="font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); display:block; margin-bottom:8px;">Add Leave Windows (Unselected future days mark as attended):</label>
             <div id="leaveRowsContainer"></div>
             <button type="button" class="add-row-btn" id="addLeaveRowBtn">+ Add Another Leave Period</button>
         </div>
@@ -309,10 +365,10 @@
         <button id="runLeavesBtn" class="btn calc-btn">Calculate Leave Impact</button>
         
         <div id="leaveReportBox" class="report-box" style="display:none;">
-            <h4 style="margin-top:0; margin-bottom:8px; color:#475569;">📊 Projections Report (Goal: 75%)</h4>
-            <div id="daysCountSummary" style="font-weight: 600; color: #1e293b; margin-bottom: 5px;"></div>
+            <h4 style="margin-top:0; margin-bottom:12px; color: var(--text); font-weight: 700;">📊 Projections Report (Goal: 75%)</h4>
+            <div id="daysCountSummary" style="font-weight: 600; color: var(--text); margin-bottom: 8px; font-size: 0.95rem;"></div>
             <div id="projectedAttendanceStr" class="highlight-box"></div>
-            <div id="leaveRecoveryStrategyStr" class="highlight-box" style="border-left-color: var(--warning); margin-top: 15px;"></div>
+            <div id="leaveRecoveryStrategyStr" class="highlight-box" style="border-left-color: var(--warning); margin-top: 16px;"></div>
         </div>
     </div>
 
@@ -323,7 +379,7 @@
 
 <script>
     const TARGET_PCT = 75.0;
-    let countTodayState = 'yes'; // 'yes' means today is already accounted for in inputs, 'no' means today needs fresh handling
+    let countTodayState = 'yes';
 
     function getSystemTodayDateString() {
         const today = new Date();
@@ -377,7 +433,6 @@
             }
         });
 
-        // Jump focus when pressing Enter in date fields inside rows
         fromInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -395,7 +450,6 @@
         container.appendChild(row);
     }
 
-    // Initialize first row directly on load
     addLeaveRow();
 
     document.getElementById('addLeaveRowBtn').addEventListener('click', addLeaveRow);
@@ -449,11 +503,11 @@
 
         const statusBadge = document.getElementById('displayStatus');
         if (currentPct >= TARGET_PCT) {
-            statusBadge.innerText = "✅ Current Status: Safe (≥ 75%)";
+            statusBadge.innerText = "Safe (≥ 75%)";
             statusBadge.className = "status-message status-pass";
             document.getElementById('displayPct').style.color = "var(--success)";
         } else {
-            statusBadge.innerText = "⚠️ Current Status: Low (< 75%)";
+            statusBadge.innerText = "Low (< 75%)";
             statusBadge.className = "status-message status-fail";
             document.getElementById('displayPct').style.color = "var(--danger)";
         }
@@ -538,7 +592,6 @@
             let calculationStartPoint = new Date(todayObj.getTime());
             
             if (countTodayState === 'yes') {
-                // If today is ALREADY included in totalClasses, future calendar projections must start strictly from TOMORROW.
                 calculationStartPoint.setDate(calculationStartPoint.getDate() + 1);
             }
 
@@ -606,9 +659,7 @@
         reportBox.style.display = "block";
     });
 
-    /* --- ENTER KEY CONTROLS OVERLAY --- */
-    
-    // Main Inputs
+    /* --- ENTER KEY JUMP LOGIC --- */
     document.getElementById('totalClasses').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -623,7 +674,6 @@
         }
     });
 
-    // Option 1 Recovery Panel Inputs
     document.getElementById('recoveryClassesPerDay').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -631,7 +681,6 @@
         }
     });
 
-    // Option 2 Leave Panel Inputs
     document.getElementById('leaveClassesPerDay').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
