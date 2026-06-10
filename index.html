@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>Advanced Attendance Calculator & Planner | 75% Criteria Track</title>
-    <meta name="description" content="Free premium attendance calculator and planner for college students. Track target criteria like 75%, plan future leaves, and check recovery timelines automatically.">
-    <meta name="keywords" content="attendance calculator, attendance planner, 75 attendance calculator, college attendance tracker, leave planner">
+    <title>Advanced Attendance Calculator & Planner | Dynamic Track</title>
     
     <style>
         :root {
@@ -24,12 +22,10 @@
             --focus-ring: rgba(79, 70, 229, 0.15);
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: radial-gradient(at top right, #e0e7ff 0%, var(--bg) 100%);
             color: var(--text);
             margin: 0;
@@ -44,35 +40,83 @@
             background: var(--card);
             padding: 24px 16px;
             border-radius: 20px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             max-width: 500px;
             width: 100%;
             border: 1px solid rgba(226, 232, 240, 0.8);
-            overflow: hidden;
+            position: relative;
+        }
+
+        .card-header {
+            position: relative;
+            margin-bottom: 24px;
+            padding-right: 36px;
+        }
+
+        .settings-toggle-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.2s ease;
+            user-select: none;
+        }
+        .settings-toggle-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .settings-panel {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .settings-panel-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 0 0 12px 0;
+            letter-spacing: 0.03em;
         }
 
         h1 {
-            color: var(--text);
             font-size: 1.4rem;
             font-weight: 800;
-            margin-top: 0;
-            margin-bottom: 6px;
-            letter-spacing: -0.025em;
+            margin: 0 0 6px 0;
             text-align: center;
         }
 
         .subtitle {
             color: var(--text-secondary);
             font-size: 0.85rem;
-            margin-bottom: 24px;
+            margin: 0;
             text-align: center;
-            line-height: 1.4;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
-            text-align: left;
+            margin-bottom: 18px;
+            width: 100%;
+        }
+
+        .side-by-side-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
             margin-bottom: 18px;
             width: 100%;
         }
@@ -82,7 +126,11 @@
             font-weight: 600;
             margin-bottom: 6px;
             color: var(--text-secondary);
-            line-height: 1.3;
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 100%;
         }
 
         input, select {
@@ -94,8 +142,24 @@
             outline: none;
             background-color: #ffffff;
             color: var(--text);
-            transition: all 0.2s ease;
+        }
+
+        select {
+            appearance: none;
             -webkit-appearance: none;
+            padding-right: 40px;
+        }
+
+        .select-wrapper::after {
+            content: "↕";
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-weight: bold;
         }
 
         input:focus, select:focus {
@@ -112,45 +176,35 @@
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         .calc-btn { background-color: var(--primary); margin-top: 8px; }
         .calc-btn:hover { background-color: var(--primary-hover); }
 
         .choice-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
             margin-top: 20px;
         }
-
-        @media (min-width: 380px) {
-            .choice-container {
-                flex-direction: row;
-            }
-            .choice-container button {
-                flex: 1;
-            }
+        
+        .choice-container.three-options .secondary-btn:last-child {
+            grid-column: span 2;
+        }
+        .choice-container.two-options {
+            grid-template-columns: 1fr 1fr;
         }
 
         .secondary-btn {
-            width: 100%;
             background-color: #f8fafc;
             color: var(--text-secondary);
-            font-size: 0.85rem;
-            padding: 12px;
+            font-size: 0.82rem;
+            padding: 12px 6px;
             font-weight: 600;
             border: 1px solid var(--border);
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            line-height: 1.4;
-            text-align: center;
+            line-height: 1.3;
         }
         .secondary-btn:hover { background-color: #f1f5f9; }
         .btn-active { background-color: #0f172a; color: white; border-color: #0f172a; }
@@ -160,7 +214,6 @@
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-top: 4px;
-            width: 100%;
         }
 
         .toggle-btn {
@@ -172,7 +225,6 @@
             cursor: pointer;
             color: var(--text-secondary);
             font-size: 0.8rem;
-            text-align: center;
         }
         .toggle-active {
             background-color: #eff6ff;
@@ -185,16 +237,13 @@
             padding-top: 20px;
             border-top: 1px solid var(--border);
             display: none;
-            width: 100%;
         }
-
-        .result-section { text-align: center; }
 
         .percentage {
             font-size: 2.75rem;
             font-weight: 900;
             margin: 6px 0;
-            letter-spacing: -0.04em;
+            text-align: center;
         }
 
         .status-message {
@@ -203,7 +252,6 @@
             padding: 6px 14px;
             border-radius: 100px;
             display: inline-block;
-            margin-top: 2px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -231,9 +279,52 @@
             border-radius: 0 12px 12px 0;
             margin-top: 14px;
             font-weight: 500;
-            line-height: 1.4;
             font-size: 0.85rem;
-            word-wrap: break-word;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
+            margin-bottom: 14px;
+        }
+
+        .single-card-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .dashboard-card {
+            background-color: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+        }
+        
+        .dashboard-val {
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+        
+        .dashboard-lbl {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        .recovery-info-text {
+            grid-column: span 2;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #1e293b;
+            letter-spacing: 0.02em;
+            margin-bottom: -4px;
+            text-align: left;
         }
 
         .leave-row {
@@ -245,11 +336,6 @@
             border-radius: 12px;
             margin-bottom: 12px;
             border: 1px solid var(--border);
-            position: relative;
-        }
-
-        .leave-row > div {
-            width: 100%;
         }
 
         .add-row-btn {
@@ -262,7 +348,6 @@
             cursor: pointer;
             font-weight: 600;
             margin-bottom: 16px;
-            display: inline-block;
         }
 
         .remove-row-btn {
@@ -272,16 +357,12 @@
             padding: 10px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
             width: 100%;
-            text-align: center;
-            margin-top: 4px;
+            font-weight: bold;
         }
 
         .panel-title {
-            margin-top: 0; 
-            margin-bottom: 16px;
-            color: var(--text);
+            margin: 0 0 16px 0;
             font-size: 1.05rem;
             font-weight: 700;
         }
@@ -292,75 +373,91 @@
             border-top: 1px dashed var(--border);
             font-size: 0.75rem;
             color: #94a3b8;
-            line-height: 1.5;
             text-align: center;
         }
-        .credits-footer strong {
-            color: var(--text-secondary);
-        }
-        .branch-text {
-            display: block;
-            margin-top: 2px;
-            color: #64748b;
-            font-style: normal;
-        }
+        .credits-footer strong { color: var(--text-secondary); }
+        .branch-text { display: block; margin-top: 2px; color: #64748b; }
     </style>
 </head>
 <body>
 
-<div id="calcCard" class="calculator-card">
-    <h1>📊 Attendance Planner</h1>
-    <div class="subtitle">Smart track criteria benchmarks & leaves</div>
+<div class="calculator-card">
+    <div class="card-header">
+        <h1>📊 Attendance Planner</h1>
+        <div class="subtitle">Track criteria benchmarks & leave impacts</div>
+        <div id="settingsToggle" class="settings-toggle-btn" title="Open Settings">⚙️</div>
+    </div>
+
+    <div id="settingsPanel" class="settings-panel">
+        <div class="settings-panel-title">Configuration Options</div>
+        
+        <div class="input-group" style="margin-bottom: 12px;">
+            <label for="configCriteria">Attendance Goal Target Criteria (%)</label>
+            <input type="number" id="configCriteria" value="75" min="1" max="100" placeholder="e.g. 75">
+        </div>
+
+        <div class="input-group" style="margin-bottom: 4px;">
+            <label>Are Saturdays operational working days?</label>
+            <div class="toggle-container">
+                <button type="button" id="satNoBtn" class="toggle-btn toggle-active">No, closed</button>
+                <button type="button" id="satYesBtn" class="toggle-btn">Yes, working day</button>
+            </div>
+        </div>
+    </div>
     
     <div class="input-group">
         <label for="totalClasses">Total Classes Conducted (As of Today)</label>
-        <input type="number" id="totalClasses" placeholder="e.g. 100" inputmode="numeric">
+        <input type="number" id="totalClasses" placeholder="e.g. 100">
     </div>
     
     <div class="input-group">
         <label for="attendedClasses">Classes Attended (As of Today)</label>
-        <input type="number" id="attendedClasses" placeholder="e.g. 75" inputmode="numeric">
+        <input type="number" id="attendedClasses" placeholder="e.g. 75">
     </div>
 
     <button id="calcBtn" class="btn calc-btn">Calculate Attendance</button>
     <div id="errorBox" class="error-message"></div>
 
-    <div id="resultBox" class="result-section">
+    <div id="resultBox" class="result-section" style="text-align: center;">
         <label style="color:#64748b; font-weight:700; font-size: 0.7rem; letter-spacing: 0.05em;">CURRENT ATTENDANCE</label>
         <div id="displayPct" class="percentage">0.00%</div>
         <div id="displayStatus" class="status-message"></div>
         
-        <div class="choice-container">
+        <div id="optionsContainer" class="choice-container three-options">
             <button id="optRecoveryBtn" class="secondary-btn">📈 Option 1:<br>Check Recovery</button>
             <button id="optLeavesBtn" class="secondary-btn">📅 Option 2:<br>Leave Planning</button>
+            <button id="optExamsBtn" class="secondary-btn">📝 Option 3:<br>Exam Streak Target</button>
         </div>
     </div>
 
-    <div id="recoveryPanel" class="panel-section" style="display:none;">
+    <div id="recoveryPanel" class="panel-section">
         <h3 class="panel-title">📈 Attendance Recovery</h3>
         <div class="input-group">
             <label for="recoveryClassesPerDay">Number of Classes Held Per Day</label>
-            <input type="number" id="recoveryClassesPerDay" value="6" min="1" inputmode="numeric">
+            <input type="number" id="recoveryClassesPerDay" value="6" min="1">
         </div>
         <button id="runRecoveryBtn" class="btn calc-btn">Calculate Recovery Timeline</button>
         
-        <div id="recoveryReport" class="highlight-box" style="display:none;"></div>
+        <div id="recoveryGrid" class="dashboard-grid" style="display:none;"></div>
+        <div id="recoverySafeReport" class="highlight-box" style="display:none; border-left-color: var(--success);"></div>
     </div>
 
-    <div id="leavesPanel" class="panel-section" style="display:none;">
+    <div id="leavesPanel" class="panel-section">
         <h3 class="panel-title" style="border-bottom: 1px solid var(--border); padding-bottom:10px;">📅 Leave Planning</h3>
         
         <div class="input-group">
             <label for="leaveClassesPerDay">Number of Classes Held Per Day</label>
-            <input type="number" id="leaveClassesPerDay" value="6" min="1" inputmode="numeric">
+            <input type="number" id="leaveClassesPerDay" value="6" min="1">
         </div>
 
         <div class="input-group">
-            <label>Select Leave Input Type</label>
-            <select id="leaveMethod">
-                <option value="calendar">Select Dates from Calendar</option>
-                <option value="manual">Enter Total Days Directly</option>
-            </select>
+            <label>⚡ Select Leave Input Type</label>
+            <div class="select-wrapper">
+                <select id="leaveMethod">
+                    <option value="calendar">Select Dates from Calendar</option>
+                    <option value="manual">Enter Total Days Directly</option>
+                </select>
+            </div>
         </div>
 
         <div id="todayStatusGroup" class="input-group">
@@ -371,9 +468,15 @@
             </div>
         </div>
 
-        <div id="manualInputGroup" class="input-group" style="display:none;">
-            <label for="manualLeaveDays">Number of Working Days of Leave</label>
-            <input type="number" id="manualLeaveDays" placeholder="e.g. 3" min="0" value="0" inputmode="numeric">
+        <div id="manualInputGroup" class="side-by-side-group" style="display:none;">
+            <div>
+                <label id="lblManualLeaveDays">Working Days of Leave</label>
+                <input type="text" id="manualLeaveDays" placeholder="e.g. 1 Day" value="0 Days">
+            </div>
+            <div>
+                <label for="manualLeaveClasses">Total Leave Classes</label>
+                <input type="number" id="manualLeaveClasses" placeholder="e.g. 9" min="0" value="0">
+            </div>
         </div>
 
         <div id="calendarInputGroup">
@@ -382,13 +485,62 @@
             <button type="button" class="add-row-btn" id="addLeaveRowBtn">+ Add Leave Period</button>
         </div>
 
-        <button id="runLeavesBtn" class="btn calc-btn">Calculate Leave Impact</button>
+        <button id="runLeavesBtn" class="btn calc-btn">Calculate Leave Impact & Recovery</button>
         
-        <div id="leaveReportBox" class="report-box" style="display:none;">
-            <h4 style="margin-top:0; margin-bottom:10px; color: var(--text); font-weight: 700; font-size:0.95rem;">📊 Projections Report (Goal: 75%)</h4>
-            <div id="daysCountSummary" style="font-weight: 600; color: var(--text); margin-bottom: 6px; font-size: 0.85rem;"></div>
-            <div id="projectedAttendanceStr" class="highlight-box"></div>
-            <div id="leaveRecoveryStrategyStr" class="highlight-box" style="border-left-color: var(--warning); margin-top: 12px;"></div>
+        <div id="leaveReportBox" class="report-box">
+            <div id="leaveGrid" class="dashboard-grid single-card-grid"></div>
+            <div id="leaveRecoveryGrid" class="dashboard-grid"></div>
+            <div id="leaveStatusBox" class="highlight-box"></div>
+            
+            <div id="leaveExamSection" style="display:none; margin-top:24px; border-top:1px dashed var(--border); padding-top:16px;">
+                <button type="button" id="toggleLeaveExamBtn" class="secondary-btn" style="width:100%; text-align:center; padding:12px; font-weight:700; color:#1e293b; background-color:#f1f5f9; border-color:#cbd5e1; font-family: inherit;">
+                    📝 Check Post-Leave Exam Eligibility Status
+                </button>
+
+                <div id="leaveExamDrawer" style="display:none; margin-top:18px;">
+                    <h4 style="margin:0 0 12px 0; font-size:0.95rem; color:var(--text); font-weight:700;">📝 Leave Option 3: Exam Eligibility Tracker</h4>
+
+                    <div class="input-group">
+                        <label for="leaveExamStartDate">Select Exam Start Date</label>
+                        <input type="date" id="leaveExamStartDate">
+                    </div>
+                    <button id="runLeaveExamsBtn" class="btn calc-btn" style="background-color:#0f172a;">Evaluate Post-Leave Eligibility</button>
+                    
+                    <div id="leaveExamResultBox" style="display:none; margin-top:14px;">
+                        <div id="leaveExamGrid" class="dashboard-grid single-card-grid"></div>
+                        <div id="leaveExamStatusBox" class="highlight-box"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="examsPanel" class="panel-section">
+        <h3 class="panel-title">📝 Exam Streak Target</h3>
+        
+        <div class="input-group">
+            <label for="examClassesPerDay">Number of Classes Held Per Day</label>
+            <input type="number" id="examClassesPerDay" value="6" min="1">
+        </div>
+
+        <div id="examTodayStatusGroup" class="input-group">
+            <label>Have you included today in Total Classes?</label>
+            <div class="toggle-container">
+                <button type="button" id="examTodayYesBtn" class="toggle-btn toggle-active">Yes, included</button>
+                <button type="button" id="examTodayNoBtn" class="toggle-btn">No, not yet</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="examStartDate">Select Exam Start Date</label>
+            <input type="date" id="examStartDate">
+        </div>
+
+        <button id="runExamsBtn" class="btn calc-btn">Check Eligibility Status</button>
+
+        <div id="examReportBox" class="report-box">
+            <div id="examGrid" class="dashboard-grid single-card-grid"></div>
+            <div id="examStatusBox" class="highlight-box"></div>
         </div>
     </div>
 
@@ -399,16 +551,51 @@
 </div>
 
 <script>
-    const TARGET_PCT = 75.0;
+    let TARGET_PCT = 75.0;
+    let includeSaturdays = false;
+
     let countTodayState = 'yes';
+    let examCountTodayState = 'yes';
+
+    let postLeaveTotalClasses = 0;
+    let postLeaveAttendedClasses = 0;
+    let postLeaveTimelineEnd = null; 
 
     function getSystemTodayDateString() {
         const today = new Date();
-        const y = today.getFullYear();
-        const m = String(today.getMonth() + 1).padStart(2, '0');
-        const d = String(today.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
+        return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     }
+
+    const currentTodayStr = getSystemTodayDateString();
+    document.getElementById('examStartDate').value = currentTodayStr;
+    document.getElementById('examStartDate').min = currentTodayStr;
+    document.getElementById('leaveExamStartDate').value = currentTodayStr;
+    document.getElementById('leaveExamStartDate').min = currentTodayStr;
+
+    document.getElementById('settingsToggle').addEventListener('click', function() {
+        const panel = document.getElementById('settingsPanel');
+        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+    });
+
+    document.getElementById('satNoBtn').addEventListener('click', function() {
+        this.classList.add('toggle-active');
+        document.getElementById('satYesBtn').classList.remove('toggle-active');
+        includeSaturdays = false;
+    });
+    document.getElementById('satYesBtn').addEventListener('click', function() {
+        this.classList.add('toggle-active');
+        document.getElementById('satNoBtn').classList.remove('toggle-active');
+        includeSaturdays = true;
+    });
+
+    document.getElementById('configCriteria').addEventListener('input', function() {
+        let val = parseFloat(this.value);
+        if (!isNaN(val) && val > 0 && val <= 100) {
+            TARGET_PCT = val;
+        } else {
+            TARGET_PCT = 75.0;
+        }
+    });
 
     function countWorkingDays(dateStart, dateEnd) {
         if (dateEnd < dateStart) return 0;
@@ -416,18 +603,33 @@
         let current = new Date(dateStart.getTime());
         while (current <= dateEnd) {
             let day = current.getDay();
-            if (day !== 0 && day !== 6) {
-                count++;
+            if (includeSaturdays) {
+                if (day !== 0) count++;
+            } else {
+                if (day !== 0 && day !== 6) count++;
             }
             current.setDate(current.getDate() + 1);
         }
         return count;
     }
 
+    function formatDaysAndClasses(totalClasses, classesPerDay) {
+        if (totalClasses <= 0) return "0 Days";
+        const days = Math.floor(totalClasses / classesPerDay);
+        const remainingClasses = totalClasses % classesPerDay;
+        
+        if (days > 0 && remainingClasses > 0) {
+            return `${days} Day${days > 1 ? 's' : ''}, ${remainingClasses} Class${remainingClasses > 1 ? 'es' : ''}`;
+        } else if (days > 0) {
+            return `${days} Day${days > 1 ? 's' : ''}`;
+        } else {
+            return `${remainingClasses} Class${remainingClasses > 1 ? 'es' : ''}`;
+        }
+    }
+
     function addLeaveRow() {
         const container = document.getElementById('leaveRowsContainer');
         const currentSystemToday = getSystemTodayDateString();
-
         const row = document.createElement('div');
         row.className = 'leave-row';
         
@@ -447,32 +649,14 @@
         const toInput = row.querySelector('.row-end-date');
 
         fromInput.addEventListener('change', function() {
-            const chosenFromDate = fromInput.value;
-            toInput.min = chosenFromDate;
-            if (toInput.value < chosenFromDate) {
-                toInput.value = chosenFromDate;
-            }
-        });
-
-        fromInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                toInput.focus();
-            }
-        });
-        
-        toInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('runLeavesBtn').click();
-            }
+            toInput.min = fromInput.value;
+            if (toInput.value < fromInput.value) toInput.value = fromInput.value;
         });
 
         container.appendChild(row);
     }
 
     addLeaveRow();
-
     document.getElementById('addLeaveRowBtn').addEventListener('click', addLeaveRow);
 
     document.getElementById('todayYesBtn').addEventListener('click', function() {
@@ -480,252 +664,387 @@
         document.getElementById('todayNoBtn').classList.remove('toggle-active');
         countTodayState = 'yes';
     });
-
     document.getElementById('todayNoBtn').addEventListener('click', function() {
         this.classList.add('toggle-active');
         document.getElementById('todayYesBtn').classList.remove('toggle-active');
         countTodayState = 'no';
     });
 
+    document.getElementById('examTodayYesBtn').addEventListener('click', function() {
+        this.classList.add('toggle-active');
+        document.getElementById('examTodayNoBtn').classList.remove('toggle-active');
+        examCountTodayState = 'yes';
+    });
+    document.getElementById('examTodayNoBtn').addEventListener('click', function() {
+        this.classList.add('toggle-active');
+        document.getElementById('examTodayYesBtn').classList.remove('toggle-active');
+        examCountTodayState = 'no';
+    });
+
+    document.getElementById('toggleLeaveExamBtn').addEventListener('click', function() {
+        const drawer = document.getElementById('leaveExamDrawer');
+        if (drawer.style.display === "none") {
+            drawer.style.display = "block";
+            this.style.backgroundColor = "#0f172a";
+            this.style.color = "#ffffff";
+        } else {
+            drawer.style.display = "none";
+            this.style.backgroundColor = "#f1f5f9";
+            this.style.color = "#1e293b";
+        }
+    });
+
+    function parseManualDaysInput() {
+        const val = document.getElementById('manualLeaveDays').value.trim();
+        const num = parseFloat(val);
+        if (!isNaN(num)) return num;
+        
+        const dayMatch = val.match(/^(\d+(\.\d+)?)\s*day/i);
+        if (dayMatch) return parseFloat(dayMatch[1]);
+        
+        return 0;
+    }
+
+    function updateFieldsFromManualClasses() {
+        const classes = parseInt(document.getElementById('manualLeaveClasses').value, 10) || 0;
+        const classesPerDay = parseInt(document.getElementById('leaveClassesPerDay').value, 10) || 1;
+        document.getElementById('manualLeaveDays').value = formatDaysAndClasses(classes, classesPerDay);
+    }
+
+    function updateFieldsFromManualDays() {
+        const days = parseManualDaysInput();
+        const classesPerDay = parseInt(document.getElementById('leaveClassesPerDay').value, 10) || 1;
+        const totalClasses = Math.round(days * classesPerDay);
+        
+        document.getElementById('manualLeaveClasses').value = totalClasses;
+        document.getElementById('manualLeaveDays').value = formatDaysAndClasses(totalClasses, classesPerDay);
+    }
+
+    document.getElementById('manualLeaveDays').addEventListener('focus', function() {
+        const val = this.value.trim().toLowerCase();
+        if (val === '0' || val === '0 days' || val === '') this.value = '';
+    });
+    document.getElementById('manualLeaveClasses').addEventListener('focus', function() {
+        const val = this.value.trim();
+        if (val === '0' || val === '') this.value = '';
+    });
+
+    document.getElementById('manualLeaveDays').addEventListener('blur', updateFieldsFromManualDays);
+    document.getElementById('manualLeaveDays').addEventListener('keypress', function(e) { if(e.key === 'Enter') updateFieldsFromManualDays(); });
+    document.getElementById('manualLeaveClasses').addEventListener('input', updateFieldsFromManualClasses);
+    document.getElementById('leaveClassesPerDay').addEventListener('input', function() {
+        if (document.getElementById('leaveMethod').value === 'manual') updateFieldsFromManualClasses();
+    });
+
     document.getElementById('leaveMethod').addEventListener('change', function() {
         const isManual = this.value === 'manual';
-        document.getElementById('manualInputGroup').style.display = isManual ? 'flex' : 'none';
+        document.getElementById('manualInputGroup').style.display = isManual ? 'grid' : 'none';
         document.getElementById('calendarInputGroup').style.display = isManual ? 'none' : 'block';
         document.getElementById('todayStatusGroup').style.display = isManual ? 'none' : 'flex';
+        if (isManual) updateFieldsFromManualClasses();
     });
 
     document.getElementById('calcBtn').addEventListener('click', function() {
-        const totalVal = document.getElementById('totalClasses').value.trim();
-        const attendedVal = document.getElementById('attendedClasses').value.trim();
-        const errorBox = document.getElementById('errorBox');
-        const resultBox = document.getElementById('resultBox');
+        const total = parseInt(document.getElementById('totalClasses').value.trim(), 10);
+        const attended = parseInt(document.getElementById('attendedClasses').value.trim(), 10);
         
-        errorBox.style.display = "none";
-        resultBox.style.display = "none";
-        
+        document.getElementById('errorBox').style.display = "none";
+        document.getElementById('resultBox').style.display = "none";
         document.getElementById('recoveryPanel').style.display = "none";
         document.getElementById('leavesPanel').style.display = "none";
+        document.getElementById('examsPanel').style.display = "none";
+
         document.getElementById('optRecoveryBtn').classList.remove('btn-active');
         document.getElementById('optLeavesBtn').classList.remove('btn-active');
+        document.getElementById('optExamsBtn').classList.remove('btn-active');
 
-        if (totalVal === "" || attendedVal === "") {
-            return showError("❌ Please enter values in both fields.");
+        if (isNaN(total) || isNaN(attended) || total <= 0 || attended < 0 || attended > total) {
+            document.getElementById('errorBox').innerText = "❌ Please enter valid numbers. Attended classes cannot exceed total classes.";
+            document.getElementById('errorBox').style.display = "block";
+            return;
         }
-
-        const total = parseInt(totalVal, 10);
-        const attended = parseInt(attendedVal, 10);
-
-        if (total <= 0) return showError("❌ Total classes must be greater than 0.");
-        if (attended < 0) return showError("❌ Attended classes cannot be negative.");
-        if (attended > total) return showError("❌ Attended classes cannot exceed total classes.");
 
         const currentPct = (attended / total) * 100;
         document.getElementById('displayPct').innerText = currentPct.toFixed(2) + "%";
 
         const statusBadge = document.getElementById('displayStatus');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const examButton = document.getElementById('optExamsBtn');
+
         if (currentPct >= TARGET_PCT) {
-            statusBadge.innerText = "Safe (≥ 75%)";
+            statusBadge.innerText = `Safe (≥ ${TARGET_PCT}%)`;
             statusBadge.className = "status-message status-pass";
             document.getElementById('displayPct').style.color = "var(--success)";
+            
+            examButton.style.display = "none";
+            optionsContainer.className = "choice-container two-options";
         } else {
-            statusBadge.innerText = "Low (< 75%)";
+            statusBadge.innerText = `Low (< ${TARGET_PCT}%)`;
             statusBadge.className = "status-message status-fail";
             document.getElementById('displayPct').style.color = "var(--danger)";
+            
+            examButton.style.display = "block";
+            optionsContainer.className = "choice-container three-options";
         }
 
-        resultBox.style.display = "block";
+        document.getElementById('resultBox').style.display = "block";
     });
 
     document.getElementById('optRecoveryBtn').addEventListener('click', function() {
-        document.getElementById('optRecoveryBtn').classList.add('btn-active');
+        this.classList.add('btn-active');
         document.getElementById('optLeavesBtn').classList.remove('btn-active');
+        document.getElementById('optExamsBtn').classList.remove('btn-active');
         document.getElementById('recoveryPanel').style.display = "block";
         document.getElementById('leavesPanel').style.display = "none";
-        document.getElementById('recoveryReport').style.display = "none";
+        document.getElementById('examsPanel').style.display = "none";
     });
 
     document.getElementById('optLeavesBtn').addEventListener('click', function() {
-        document.getElementById('optLeavesBtn').classList.add('btn-active');
+        this.classList.add('btn-active');
         document.getElementById('optRecoveryBtn').classList.remove('btn-active');
+        document.getElementById('optExamsBtn').classList.remove('btn-active');
         document.getElementById('leavesPanel').style.display = "block";
         document.getElementById('recoveryPanel').style.display = "none";
-        document.getElementById('leaveReportBox').style.display = "none";
+        document.getElementById('examsPanel').style.display = "none";
     });
 
-    function showError(msg) {
-        const errorBox = document.getElementById('errorBox');
-        errorBox.innerText = msg;
-        errorBox.style.display = "block";
-    }
+    document.getElementById('optExamsBtn').addEventListener('click', function() {
+        this.classList.add('btn-active');
+        document.getElementById('optRecoveryBtn').classList.remove('btn-active');
+        document.getElementById('optLeavesBtn').classList.remove('btn-active');
+        document.getElementById('examsPanel').style.display = "block";
+        document.getElementById('recoveryPanel').style.display = "none";
+        document.getElementById('leavesPanel').style.display = "none";
+    });
 
     document.getElementById('runRecoveryBtn').addEventListener('click', function() {
         const total = parseInt(document.getElementById('totalClasses').value, 10);
         const attended = parseInt(document.getElementById('attendedClasses').value, 10);
-        const cpdVal = document.getElementById('recoveryClassesPerDay').value.trim();
-        const report = document.getElementById('recoveryReport');
-        report.style.display = "none";
+        const classesPerDay = parseInt(document.getElementById('recoveryClassesPerDay').value, 10);
+        
+        const grid = document.getElementById('recoveryGrid');
+        const report = document.getElementById('recoverySafeReport');
+        grid.style.display = "none"; report.style.display = "none";
 
-        if (cpdVal === "" || parseInt(cpdVal, 10) <= 0) return alert("Please enter valid classes per day.");
-        const classesPerDay = parseInt(cpdVal, 10);
-        const currentPct = (attended / total) * 100;
-
-        if (currentPct >= TARGET_PCT) {
-            report.innerHTML = `✅ <strong>Status Safe:</strong> Your current attendance is <strong>${currentPct.toFixed(2)}%</strong>, which is already above the 75% requirement. No recovery layout is needed.`;
+        if ((attended / total) * 100 >= TARGET_PCT) {
+            report.innerHTML = `✅ <strong>Safe Status:</strong> Your attendance is already above ${TARGET_PCT}%.`;
+            report.style.display = "block";
         } else {
-            const targetFraction = TARGET_PCT / 100;
-            let requiredClasses = Math.ceil((targetFraction * total - attended) / (1 - targetFraction));
-            let requiredDays = Math.ceil(requiredClasses / classesPerDay);
-            let targetGrandTotal = total + requiredClasses;
-
-            report.innerHTML = `🎯 <strong>Recovery Track to 75%:</strong><br>
-            • Must attend next: <strong>${requiredClasses} classes</strong> consecutively.<br>
-            • Duration needed: ~<strong>${requiredDays} full working days</strong> of perfect attendance.<br>
-            • <strong>Target Milestone:</strong> Your attendance will hit 75% when the total classes conducted reaches <strong>${targetGrandTotal}</strong> (and you have attended ${attended + requiredClasses} of them).`;
+            let reqClasses = Math.ceil(((TARGET_PCT/100) * total - attended) / (1 - (TARGET_PCT/100)));
+            let outputDaysStr = formatDaysAndClasses(reqClasses, classesPerDay);
+            grid.innerHTML = `
+                <div class="dashboard-card"><div class="dashboard-val" style="color:var(--success);">${reqClasses}</div><div class="dashboard-lbl">Classes Needed</div></div>
+                <div class="dashboard-card"><div class="dashboard-val" style="color:var(--success); font-size:1.1rem; padding: 4px 0;">${outputDaysStr}</div><div class="dashboard-lbl">Working Days</div></div>`;
+            grid.style.display = "grid";
         }
-        report.style.display = "block";
     });
 
     document.getElementById('runLeavesBtn').addEventListener('click', function() {
         const total = parseInt(document.getElementById('totalClasses').value, 10);
         const attended = parseInt(document.getElementById('attendedClasses').value, 10);
-        const cpdVal = document.getElementById('leaveClassesPerDay').value.trim();
+        const classesPerDay = parseInt(document.getElementById('leaveClassesPerDay').value, 10);
         const method = document.getElementById('leaveMethod').value;
-        const reportBox = document.getElementById('leaveReportBox');
-        reportBox.style.display = "none";
-
-        if (cpdVal === "" || parseInt(cpdVal, 10) <= 0) return alert("Please enter valid classes per day.");
-        const classesPerDay = parseInt(cpdVal, 10);
-
-        let adjustedTotal = total;
-        let adjustedAttended = attended;
-        let workingDaysOfLeave = 0;
+        
+        let adjustedTotal = total, adjustedAttended = attended, totalLeaveClassesCalculated = 0;
+        let todayParts = getSystemTodayDateString().split('-');
+        let todayObj = new Date(todayParts[0], todayParts[1] - 1, todayParts[2]);
 
         if (method === 'manual') {
-            const manualDays = document.getElementById('manualLeaveDays').value.trim();
-            if (manualDays === "" || parseInt(manualDays, 10) < 0) return alert("Please enter valid leave days.");
-            workingDaysOfLeave = parseInt(manualDays, 10);
-            adjustedTotal += (workingDaysOfLeave * classesPerDay);
+            totalLeaveClassesCalculated = parseInt(document.getElementById('manualLeaveClasses').value, 10) || 0;
+            adjustedTotal += totalLeaveClassesCalculated;
+            
+            postLeaveTotalClasses = adjustedTotal;
+            postLeaveAttendedClasses = adjustedAttended;
+            
+            let manualDaysCount = parseManualDaysInput();
+            let estimatedDaysForward = Math.ceil(manualDaysCount * (includeSaturdays ? 1.16 : 1.4)); 
+            let endObj = new Date(todayObj.getTime());
+            endObj.setDate(endObj.getDate() + estimatedDaysForward);
+            postLeaveTimelineEnd = endObj;
         } else {
             const startInputs = document.querySelectorAll('.row-start-date');
             const endInputs = document.querySelectorAll('.row-end-date');
-            
-            if (startInputs.length === 0) return alert("Please add at least one leave date range row.");
-
-            let todayParts = getSystemTodayDateString().split('-');
-            let todayObj = new Date(todayParts[0], todayParts[1] - 1, todayParts[2], 0, 0, 0, 0);
-
             let calculationStartPoint = new Date(todayObj.getTime());
             
-            if (countTodayState === 'yes') {
-                calculationStartPoint.setDate(calculationStartPoint.getDate() + 1);
-            }
+            if (countTodayState === 'yes') calculationStartPoint.setDate(calculationStartPoint.getDate() + 1);
 
             let furthestLeaveEnd = new Date(calculationStartPoint.getTime());
             let leaveDaysSet = new Set();
 
             for (let i = 0; i < startInputs.length; i++) {
-                if (!startInputs[i].value || !endInputs[i].value) {
-                    return alert(`Please completely fill out all dates in period #${i + 1}`);
-                }
-                
                 let pStart = startInputs[i].value.split('-');
                 let pEnd = endInputs[i].value.split('-');
-                
-                let sD = new Date(pStart[0], pStart[1] - 1, pStart[2], 0, 0, 0, 0);
-                let eD = new Date(pEnd[0], pEnd[1] - 1, pEnd[2], 0, 0, 0, 0);
+                let sD = new Date(pStart[0], pStart[1] - 1, pStart[2]);
+                let eD = new Date(pEnd[0], pEnd[1] - 1, pEnd[2]);
 
-                if (sD < todayObj || eD < todayObj) {
-                    return alert(`❌ Error in Period #${i + 1}: Past dates cannot be computed.`);
-                }
-                if (eD < sD) {
-                    return alert(`❌ Error in Period #${i + 1}: End date cannot be before start date.`);
-                }
-
-                if (eD > furthestLeaveEnd) {
-                    furthestLeaveEnd = new Date(eD.getTime());
-                }
+                if (eD > furthestLeaveEnd) furthestLeaveEnd = new Date(eD.getTime());
 
                 let loop = new Date(sD.getTime());
                 while (loop <= eD) {
-                    if (loop >= calculationStartPoint && loop.getDay() !== 0 && loop.getDay() !== 6) {
+                    let day = loop.getDay();
+                    let isWorking = includeSaturdays ? (day !== 0) : (day !== 0 && day !== 6);
+                    if (loop >= calculationStartPoint && isWorking) {
                         leaveDaysSet.add(loop.toDateString());
                     }
                     loop.setDate(loop.getDate() + 1);
                 }
             }
-
-            workingDaysOfLeave = leaveDaysSet.size;
-
+            let totalDaysNum = leaveDaysSet.size;
+            totalLeaveClassesCalculated = totalDaysNum * classesPerDay;
             let totalTimelineWorkingDays = countWorkingDays(calculationStartPoint, furthestLeaveEnd);
-            let perfectAttendanceWorkingDays = totalTimelineWorkingDays - workingDaysOfLeave;
-
             adjustedTotal += (totalTimelineWorkingDays * classesPerDay);
-            adjustedAttended += (perfectAttendanceWorkingDays * classesPerDay);
+            adjustedAttended += ((totalTimelineWorkingDays - totalDaysNum) * classesPerDay);
+
+            postLeaveTotalClasses = adjustedTotal;
+            postLeaveAttendedClasses = adjustedAttended;
+            postLeaveTimelineEnd = furthestLeaveEnd;
         }
 
         const projectedAttendance = (adjustedAttended / adjustedTotal) * 100;
-
-        document.getElementById('daysCountSummary').innerText = `📝 Total Leave Tracked (Working Days): ${workingDaysOfLeave} Day(s)`;
+        const color = projectedAttendance >= TARGET_PCT ? 'var(--success)' : 'var(--danger)';
         
-        const colorStr = projectedAttendance >= TARGET_PCT ? 'var(--success)' : 'var(--danger)';
-        document.getElementById('projectedAttendanceStr').innerHTML = `📉 Projected Attendance: <strong style='color: ${colorStr}'>${projectedAttendance.toFixed(2)}%</strong> (Classes: ${adjustedAttended} / ${adjustedTotal})`;
+        document.getElementById('leaveGrid').innerHTML = `
+            <div class="dashboard-card" style="grid-column: span 2;"><div class="dashboard-val" style="color: ${color};">${projectedAttendance.toFixed(2)}%</div><div class="dashboard-lbl">Projected Attendance after leaves</div></div>`;
 
-        const recStr = document.getElementById('leaveRecoveryStrategyStr');
+        const recGrid = document.getElementById('leaveRecoveryGrid');
+        const statusBox = document.getElementById('leaveStatusBox');
+        const leaveExamSec = document.getElementById('leaveExamSection');
+        
+        document.getElementById('leaveExamDrawer').style.display = "none";
+        document.getElementById('toggleLeaveExamBtn').style.backgroundColor = "#f1f5f9";
+        document.getElementById('toggleLeaveExamBtn').style.color = "#1e293b";
+        document.getElementById('leaveExamResultBox').style.display = "none";
+
+        let minCalendarBound = new Date(postLeaveTimelineEnd.getTime());
+        minCalendarBound.setDate(minCalendarBound.getDate() + 1);
+        let minCalStr = `${minCalendarBound.getFullYear()}-${String(minCalendarBound.getMonth() + 1).padStart(2, '0')}-${String(minCalendarBound.getDate()).padStart(2, '0')}`;
+        document.getElementById('leaveExamStartDate').min = minCalStr;
+        if(document.getElementById('leaveExamStartDate').value < minCalStr) {
+            document.getElementById('leaveExamStartDate').value = minCalStr;
+        }
+
         if (projectedAttendance < TARGET_PCT) {
-            const targetFraction = TARGET_PCT / 100;
-            let requiredClasses = Math.ceil((targetFraction * adjustedTotal - adjustedAttended) / (1 - targetFraction));
-            let requiredDays = Math.ceil(requiredClasses / classesPerDay);
-            let postLeaveGrandTotal = adjustedTotal + requiredClasses;
-
-            recStr.innerHTML = `⚠️ <strong>Post-Leave Recovery Strategy:</strong><br>
-            To recover back to 75% after your planned leaves, you will need to attend the next <strong>${requiredClasses} classes</strong> consecutively (~<strong>${requiredDays} working days</strong>). Your attendance will reset to 75% when the overall classes count reaches a grand total of <strong>${postLeaveGrandTotal}</strong>.`;
+            let reqClasses = Math.ceil(((TARGET_PCT/100) * adjustedTotal - adjustedAttended) / (1 - (TARGET_PCT/100)));
+            let recoveryDaysDisplayStr = formatDaysAndClasses(reqClasses, classesPerDay);
+            
+            recGrid.innerHTML = `
+                <div class="recovery-info-text">💡 Requirements to reach ${TARGET_PCT}% attendance:</div>
+                <div class="dashboard-card"><div class="dashboard-val" style="color:var(--success);">${reqClasses}</div><div class="dashboard-lbl">Recovery Classes</div></div>
+                <div class="dashboard-card"><div class="dashboard-val" style="color:var(--success); font-size:1.1rem; padding: 4px 0;">${recoveryDaysDisplayStr}</div><div class="dashboard-lbl">Recovery Days</div></div>`;
+            recGrid.style.display = "grid";
+            statusBox.style.display = "none";
+            leaveExamSec.style.display = "block";
         } else {
-            recStr.innerHTML = `✅ <strong>Status Safe:</strong> Even after taking these leaves, your attendance will remain above the 75% target benchmark.`;
+            recGrid.style.display = "none";
+            statusBox.style.borderLeftColor = 'var(--success)';
+            statusBox.innerHTML = `✅ <strong>Status Safe:</strong> Your attendance will stay safely above the ${TARGET_PCT}% requirement.`;
+            statusBox.style.display = "block";
+            leaveExamSec.style.display = "none";
         }
-
-        reportBox.style.display = "block";
+        document.getElementById('leaveReportBox').style.display = "block";
     });
 
-    /* --- ENTER KEY JUMP LOGIC --- */
-    document.getElementById('totalClasses').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('attendedClasses').focus();
+    // Nested Option 3 Execution Block
+    document.getElementById('runLeaveExamsBtn').addEventListener('click', function() {
+        const classesPerDay = parseInt(document.getElementById('leaveClassesPerDay').value, 10);
+        const examDateVal = document.getElementById('leaveExamStartDate').value;
+
+        if (!examDateVal) {
+            alert("Please choose a valid date from the calendar.");
+            return;
         }
+
+        // Seamless reference tracking starts on the exact next working day after your leaves wrap up
+        let startWindow = new Date(postLeaveTimelineEnd.getTime());
+        startWindow.setDate(startWindow.getDate() + 1);
+
+        let examParts = examDateVal.split('-');
+        let examObj = new Date(examParts[0], examParts[1] - 1, examParts[2]);
+        let dayBeforeExam = new Date(examObj.getTime());
+        dayBeforeExam.setDate(dayBeforeExam.getDate() - 1);
+
+        let streakWorkingDays = countWorkingDays(startWindow, dayBeforeExam);
+        let potentialClasses = streakWorkingDays * classesPerDay;
+
+        let finalTotal = postLeaveTotalClasses + potentialClasses;
+        let finalAttended = postLeaveAttendedClasses + potentialClasses;
+        let targetStreakPct = (finalAttended / finalTotal) * 100;
+
+        const lExamGrid = document.getElementById('leaveExamGrid');
+        const lExamStatusBox = document.getElementById('leaveExamStatusBox');
+
+        if (targetStreakPct >= TARGET_PCT) {
+            lExamGrid.innerHTML = `
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--success);">${targetStreakPct.toFixed(2)}%</div><div class="dashboard-lbl">Projected Target Streak</div></div>
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--success); font-size:1.1rem; padding-top:4px;">ELIGIBLE</div><div class="dashboard-lbl">Exam Eligibility</div></div>`;
+            
+            lExamStatusBox.style.borderLeftColor = 'var(--success)';
+            lExamStatusBox.innerHTML = `✅ Perfect attendance until exams will rescue your record, making you <strong>Eligible for Exams</strong>.`;
+        } else {
+            lExamGrid.innerHTML = `
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--danger);">${targetStreakPct.toFixed(2)}%</div><div class="dashboard-lbl">Projected Target Streak</div></div>
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--danger); font-size:1.1rem; padding-top:4px;">NOT ELIGIBLE</div><div class="dashboard-lbl">Exam Eligibility</div></div>`;
+            
+            lExamStatusBox.style.borderLeftColor = 'var(--danger)';
+            lExamStatusBox.innerHTML = `❌ Even with an unbroken streak, you will remain <strong>Not Eligible</strong>.`;
+        }
+
+        document.getElementById('leaveExamResultBox').style.display = "block";
     });
 
-    document.getElementById('attendedClasses').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('calcBtn').click();
-        }
-    });
+    // Standalone Option 3 Execution Block
+    document.getElementById('runExamsBtn').addEventListener('click', function() {
+        const total = parseInt(document.getElementById('totalClasses').value, 10);
+        const attended = parseInt(document.getElementById('attendedClasses').value, 10);
+        const classesPerDay = parseInt(document.getElementById('examClassesPerDay').value, 10);
+        const examDateVal = document.getElementById('examStartDate').value;
 
-    document.getElementById('recoveryClassesPerDay').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('runRecoveryBtn').click();
+        if (!examDateVal) {
+            alert("Please choose a valid date from the calendar.");
+            return;
         }
-    });
 
-    document.getElementById('leaveClassesPerDay').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const leaveMethod = document.getElementById('leaveMethod').value;
-            if (leaveMethod === 'manual') {
-                document.getElementById('manualLeaveDays').focus();
-            } else {
-                const queryFirstStartRow = document.querySelector('.row-start-date');
-                if (queryFirstStartRow) queryFirstStartRow.focus();
-            }
+        let todayParts = getSystemTodayDateString().split('-');
+        let todayObj = new Date(todayParts[0], todayParts[1] - 1, todayParts[2]);
+        let startWindow = new Date(todayObj.getTime());
+        
+        if (examCountTodayState === 'yes') {
+            startWindow.setDate(startWindow.getDate() + 1);
         }
-    });
 
-    document.getElementById('manualLeaveDays').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('runLeavesBtn').click();
+        let examParts = examDateVal.split('-');
+        let examObj = new Date(examParts[0], examParts[1] - 1, examParts[2]);
+        
+        let dayBeforeExam = new Date(examObj.getTime());
+        dayBeforeExam.setDate(dayBeforeExam.getDate() - 1);
+
+        let streakWorkingDays = countWorkingDays(startWindow, dayBeforeExam);
+        let potentialClasses = streakWorkingDays * classesPerDay;
+
+        let finalTotal = total + potentialClasses;
+        let finalAttended = attended + potentialClasses;
+        let targetStreakPct = (finalAttended / finalTotal) * 100;
+
+        const examGrid = document.getElementById('examGrid');
+        const examStatusBox = document.getElementById('examStatusBox');
+
+        if (targetStreakPct >= TARGET_PCT) {
+            examGrid.innerHTML = `
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--success);">${targetStreakPct.toFixed(2)}%</div><div class="dashboard-lbl">Projected Target Streak</div></div>
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--success); font-size:1.1rem; padding-top:4px;">ELIGIBLE</div><div class="dashboard-lbl">Exam Eligibility</div></div>`;
+            
+            examStatusBox.style.borderLeftColor = 'var(--success)';
+            examStatusBox.innerHTML = `✅ Going to college daily up until your exams makes you <strong>Eligible for Exams</strong>.`;
+        } else {
+            examGrid.innerHTML = `
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--danger);">${targetStreakPct.toFixed(2)}%</div><div class="dashboard-lbl">Projected Target Streak</div></div>
+                <div class="dashboard-card"><div class="dashboard-val" style="color: var(--danger); font-size:1.1rem; padding-top:4px;">NOT ELIGIBLE</div><div class="dashboard-lbl">Exam Eligibility</div></div>`;
+            
+            examStatusBox.style.borderLeftColor = 'var(--danger)';
+            examStatusBox.innerHTML = `❌ Even with a flawless streak up until your exams, you remain <strong>Not Eligible</strong>.`;
         }
+
+        document.getElementById('examReportBox').style.display = "block";
     });
 </script>
 </body>
