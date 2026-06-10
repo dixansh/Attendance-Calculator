@@ -5,13 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Google Search Engine Optimization (SEO) Metadata -->
     <title>Advanced Attendance Calculator & Planner | 75% Criteria Track</title>
     <meta name="description" content="Free premium attendance calculator and planner for college students. Track target criteria like 75%, plan future leaves, and check recovery timelines automatically.">
     <meta name="keywords" content="attendance calculator, attendance planner, 75 attendance calculator, college attendance tracker, leave planner">
     
-    <!-- Feel free to re-paste your Google Verification Tag here if overwritten -->
-
     <style>
         :root {
             --primary: #4f46e5;
@@ -28,7 +25,7 @@
         }
 
         * {
-            box-sizing: border-box; /* Crucial: ensures padding doesn't push elements out of screen */
+            box-sizing: border-box;
         }
 
         body {
@@ -36,7 +33,7 @@
             background: radial-gradient(at top right, #e0e7ff 0%, var(--bg) 100%);
             color: var(--text);
             margin: 0;
-            padding: 16px 12px; /* Very light margins so it looks spacious on tiny screens */
+            padding: 16px 12px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -45,18 +42,18 @@
 
         .calculator-card {
             background: var(--card);
-            padding: 24px 16px; /* Reduced internal padding for phone screens */
+            padding: 24px 16px;
             border-radius: 20px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
             max-width: 500px;
             width: 100%;
             border: 1px solid rgba(226, 232, 240, 0.8);
-            overflow: hidden; /* Stops content from exploding outwards */
+            overflow: hidden;
         }
 
         h1 {
             color: var(--text);
-            font-size: 1.4rem; /* Downsized slightly for phone headers */
+            font-size: 1.4rem;
             font-weight: 800;
             margin-top: 0;
             margin-bottom: 6px;
@@ -89,7 +86,7 @@
         }
 
         input, select {
-            width: 100%; /* Spans exactly to its boundary container */
+            width: 100%;
             padding: 12px 14px;
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -98,7 +95,7 @@
             background-color: #ffffff;
             color: var(--text);
             transition: all 0.2s ease;
-            -webkit-appearance: none; /* Uniform inputs on Safari iOS */
+            -webkit-appearance: none;
         }
 
         input:focus, select:focus {
@@ -125,7 +122,6 @@
         .calc-btn { background-color: var(--primary); margin-top: 8px; }
         .calc-btn:hover { background-color: var(--primary-hover); }
 
-        /* Fixed Option Buttons Layout: Stacks vertically on tiny phones, sides by side on medium screens */
         .choice-container {
             display: flex;
             flex-direction: column;
@@ -135,7 +131,7 @@
 
         @media (min-width: 380px) {
             .choice-container {
-                flex-direction: row; /* Side-by-side execution if the phone layout allows space */
+                flex-direction: row;
             }
             .choice-container button {
                 flex: 1;
@@ -195,7 +191,7 @@
         .result-section { text-align: center; }
 
         .percentage {
-            font-size: 2.75rem; /* Downscaled so large percentage numbers don't wrap and clip */
+            font-size: 2.75rem;
             font-weight: 900;
             margin: 6px 0;
             letter-spacing: -0.04em;
@@ -237,13 +233,12 @@
             font-weight: 500;
             line-height: 1.4;
             font-size: 0.85rem;
-            word-wrap: break-word; /* Avoids string clipping */
+            word-wrap: break-word;
         }
 
-        /* Fixed Leave Windows Rows for Mobile Devices */
         .leave-row {
             display: flex;
-            flex-direction: column; /* Row components stack neatly instead of crunching sideways */
+            flex-direction: column;
             gap: 10px;
             background: #f8fafc;
             padding: 12px;
@@ -278,7 +273,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            width: 100%; /* Stretches to block full click targets */
+            width: 100%;
             text-align: center;
             margin-top: 4px;
         }
@@ -297,11 +292,17 @@
             border-top: 1px dashed var(--border);
             font-size: 0.75rem;
             color: #94a3b8;
-            line-height: 1.4;
+            line-height: 1.5;
             text-align: center;
         }
         .credits-footer strong {
             color: var(--text-secondary);
+        }
+        .branch-text {
+            display: block;
+            margin-top: 2px;
+            color: #64748b;
+            font-style: normal;
         }
     </style>
 </head>
@@ -392,7 +393,8 @@
     </div>
 
     <div class="credits-footer">
-        Developed by: <strong>Dixansh Yadav</strong> &bull; <em>Branch: Civil Engineering</em>
+        Developed by: <strong>Dixansh Yadav</strong>
+        <span class="branch-text">Branch: Civil Engineering</span>
     </div>
 </div>
 
@@ -568,13 +570,17 @@
         const currentPct = (attended / total) * 100;
 
         if (currentPct >= TARGET_PCT) {
-            report.innerHTML = `✅ <strong>Status Safe:</strong> Your current attendance is <strong>${currentPct.toFixed(2)}%</strong>, which is already above the 75% requirement.`;
+            report.innerHTML = `✅ <strong>Status Safe:</strong> Your current attendance is <strong>${currentPct.toFixed(2)}%</strong>, which is already above the 75% requirement. No recovery layout is needed.`;
         } else {
             const targetFraction = TARGET_PCT / 100;
             let requiredClasses = Math.ceil((targetFraction * total - attended) / (1 - targetFraction));
             let requiredDays = Math.ceil(requiredClasses / classesPerDay);
+            let targetGrandTotal = total + requiredClasses;
 
-            report.innerHTML = `🎯 <strong>Recovery Track:</strong><br>To hit 75%, you must attend the next <strong>${requiredClasses} classes</strong> consecutively. At ${classesPerDay} classes/day, that equals roughly <strong>${requiredDays} full working days</strong> of perfect attendance.`;
+            report.innerHTML = `🎯 <strong>Recovery Track to 75%:</strong><br>
+            • Must attend next: <strong>${requiredClasses} classes</strong> consecutively.<br>
+            • Duration needed: ~<strong>${requiredDays} full working days</strong> of perfect attendance.<br>
+            • <strong>Target Milestone:</strong> Your attendance will hit 75% when the total classes conducted reaches <strong>${targetGrandTotal}</strong> (and you have attended ${attended + requiredClasses} of them).`;
         }
         report.style.display = "block";
     });
@@ -669,8 +675,10 @@
             const targetFraction = TARGET_PCT / 100;
             let requiredClasses = Math.ceil((targetFraction * adjustedTotal - adjustedAttended) / (1 - targetFraction));
             let requiredDays = Math.ceil(requiredClasses / classesPerDay);
+            let postLeaveGrandTotal = adjustedTotal + requiredClasses;
 
-            recStr.innerHTML = `⚠️ <strong>Post-Leave Recovery Strategy:</strong><br>To recover back to 75% after your planned leaves, you will need to attend the next <strong>${requiredClasses} classes</strong> consecutively. This equals ~<strong>${requiredDays} working days</strong> of perfect attendance.`;
+            recStr.innerHTML = `⚠️ <strong>Post-Leave Recovery Strategy:</strong><br>
+            To recover back to 75% after your planned leaves, you will need to attend the next <strong>${requiredClasses} classes</strong> consecutively (~<strong>${requiredDays} working days</strong>). Your attendance will reset to 75% when the overall classes count reaches a grand total of <strong>${postLeaveGrandTotal}</strong>.`;
         } else {
             recStr.innerHTML = `✅ <strong>Status Safe:</strong> Even after taking these leaves, your attendance will remain above the 75% target benchmark.`;
         }
