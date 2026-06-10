@@ -3,12 +3,15 @@
 <head>
     <meta name="google-site-verification" content="ZbF-XY8vO_fcRmppe3CDMaX6AqzeRB-GZLJ0dsvp7v8" />
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
+    <!-- Google Search Engine Optimization (SEO) Metadata -->
     <title>Advanced Attendance Calculator & Planner | 75% Criteria Track</title>
     <meta name="description" content="Free premium attendance calculator and planner for college students. Track target criteria like 75%, plan future leaves, and check recovery timelines automatically.">
     <meta name="keywords" content="attendance calculator, attendance planner, 75 attendance calculator, college attendance tracker, leave planner">
     
+    <!-- Feel free to re-paste your Google Verification Tag here if overwritten -->
+
     <style>
         :root {
             --primary: #4f46e5;
@@ -24,72 +27,78 @@
             --focus-ring: rgba(79, 70, 229, 0.15);
         }
 
+        * {
+            box-sizing: border-box; /* Crucial: ensures padding doesn't push elements out of screen */
+        }
+
         body {
             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: radial-gradient(at top right, #e0e7ff 0%, var(--bg) 100%);
             color: var(--text);
             margin: 0;
-            padding: 40px 20px;
+            padding: 16px 12px; /* Very light margins so it looks spacious on tiny screens */
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 95vh;
+            min-height: 98vh;
         }
 
         .calculator-card {
             background: var(--card);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
-            max-width: 540px;
+            padding: 24px 16px; /* Reduced internal padding for phone screens */
+            border-radius: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            max-width: 500px;
             width: 100%;
             border: 1px solid rgba(226, 232, 240, 0.8);
+            overflow: hidden; /* Stops content from exploding outwards */
         }
 
         h1 {
             color: var(--text);
-            font-size: 1.75rem;
+            font-size: 1.4rem; /* Downsized slightly for phone headers */
             font-weight: 800;
             margin-top: 0;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             letter-spacing: -0.025em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            text-align: center;
         }
 
         .subtitle {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 32px;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
             text-align: center;
+            line-height: 1.4;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
             text-align: left;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
+            width: 100%;
         }
 
         label {
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--text-secondary);
-            letter-spacing: -0.01em;
+            line-height: 1.3;
         }
 
         input, select {
-            padding: 14px 16px;
+            width: 100%; /* Spans exactly to its boundary container */
+            padding: 12px 14px;
             border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             outline: none;
             background-color: #ffffff;
             color: var(--text);
             transition: all 0.2s ease;
+            -webkit-appearance: none; /* Uniform inputs on Safari iOS */
         }
 
         input:focus, select:focus {
@@ -97,73 +106,78 @@
             box-shadow: 0 0 0 4px var(--focus-ring);
         }
 
-        input::placeholder {
-            color: #94a3b8;
-        }
-
         .btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
         }
 
-        .calc-btn { background-color: var(--primary); margin-top: 10px; }
-        .calc-btn:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-        .calc-btn:active { transform: translateY(0); }
+        .calc-btn { background-color: var(--primary); margin-top: 8px; }
+        .calc-btn:hover { background-color: var(--primary-hover); }
 
+        /* Fixed Option Buttons Layout: Stacks vertically on tiny phones, sides by side on medium screens */
         .choice-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 380px) {
+            .choice-container {
+                flex-direction: row; /* Side-by-side execution if the phone layout allows space */
+            }
+            .choice-container button {
+                flex: 1;
+            }
         }
 
         .secondary-btn {
+            width: 100%;
             background-color: #f8fafc;
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            padding: 14px;
+            font-size: 0.85rem;
+            padding: 12px;
             font-weight: 600;
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
             line-height: 1.4;
+            text-align: center;
         }
-        .secondary-btn:hover { background-color: #f1f5f9; color: var(--text); border-color: #cbd5e1; }
-        .btn-active { background-color: #0f172a; color: white; border-color: #0f172a; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2); }
-        .btn-active:hover { background-color: #1e293b; color: white; }
+        .secondary-btn:hover { background-color: #f1f5f9; }
+        .btn-active { background-color: #0f172a; color: white; border-color: #0f172a; }
 
         .toggle-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 8px;
             margin-top: 4px;
+            width: 100%;
         }
 
         .toggle-btn {
-            padding: 14px;
+            padding: 12px 6px;
             font-weight: 600;
             background: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
+            font-size: 0.8rem;
+            text-align: center;
         }
-        .toggle-btn:hover { background-color: #f8fafc; }
         .toggle-active {
             background-color: #eff6ff;
             border-color: #3b82f6;
@@ -171,29 +185,29 @@
         }
 
         .result-section, .panel-section, .report-box {
-            margin-top: 32px;
-            padding-top: 28px;
+            margin-top: 24px;
+            padding-top: 20px;
             border-top: 1px solid var(--border);
             display: none;
-            text-align: left;
+            width: 100%;
         }
 
         .result-section { text-align: center; }
 
         .percentage {
-            font-size: 3.5rem;
+            font-size: 2.75rem; /* Downscaled so large percentage numbers don't wrap and clip */
             font-weight: 900;
-            margin: 8px 0;
+            margin: 6px 0;
             letter-spacing: -0.04em;
         }
 
         .status-message {
             font-weight: 700;
-            font-size: 0.875rem;
-            padding: 8px 18px;
+            font-size: 0.8rem;
+            padding: 6px 14px;
             border-radius: 100px;
             display: inline-block;
-            margin-top: 4px;
+            margin-top: 2px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -203,83 +217,88 @@
         
         .error-message {
             color: var(--danger);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-top: 24px;
+            margin-top: 16px;
             display: none;
             text-align: center;
-            padding: 12px;
+            padding: 10px;
             background-color: #fef2f2;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px dashed #fca5a5;
         }
 
         .highlight-box {
             background-color: #f8fafc;
             border-left: 4px solid var(--primary);
-            padding: 18px;
-            border-radius: 0 16px 16px 0;
-            margin-top: 16px;
+            padding: 14px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 14px;
             font-weight: 500;
-            line-height: 1.5;
-            font-size: 0.95rem;
+            line-height: 1.4;
+            font-size: 0.85rem;
+            word-wrap: break-word; /* Avoids string clipping */
         }
 
+        /* Fixed Leave Windows Rows for Mobile Devices */
         .leave-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 12px;
-            align-items: end;
+            display: flex;
+            flex-direction: column; /* Row components stack neatly instead of crunching sideways */
+            gap: 10px;
             background: #f8fafc;
-            padding: 14px;
+            padding: 12px;
             border-radius: 12px;
             margin-bottom: 12px;
             border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .leave-row > div {
+            width: 100%;
         }
 
         .add-row-btn {
             background-color: #f1f5f9;
             color: var(--text-secondary);
-            padding: 10px 16px;
-            font-size: 0.875rem;
+            padding: 10px 14px;
+            font-size: 0.8rem;
             border-radius: 8px;
             border: 1px solid var(--border);
             cursor: pointer;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             display: inline-block;
-            transition: all 0.2s ease;
         }
-        .add-row-btn:hover { background-color: #e2e8f0; color: var(--text); }
 
         .remove-row-btn {
             background-color: #fee2e2;
             color: var(--danger);
             border: none;
-            padding: 14px;
+            padding: 10px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.2s ease;
+            width: 100%; /* Stretches to block full click targets */
+            text-align: center;
+            margin-top: 4px;
         }
-        .remove-row-btn:hover { background-color: #fecaca; }
 
         .panel-title {
             margin-top: 0; 
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             color: var(--text);
-            font-size: 1.2rem;
+            font-size: 1.05rem;
             font-weight: 700;
-            letter-spacing: -0.01em;
         }
 
         .credits-footer {
-            margin-top: 40px;
-            padding-top: 20px;
+            margin-top: 24px;
+            padding-top: 16px;
             border-top: 1px dashed var(--border);
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #94a3b8;
-            line-height: 1.5;
+            line-height: 1.4;
+            text-align: center;
         }
         .credits-footer strong {
             color: var(--text-secondary);
@@ -294,19 +313,19 @@
     
     <div class="input-group">
         <label for="totalClasses">Total Classes Conducted (As of Today)</label>
-        <input type="number" id="totalClasses" placeholder="e.g. 100">
+        <input type="number" id="totalClasses" placeholder="e.g. 100" inputmode="numeric">
     </div>
     
     <div class="input-group">
         <label for="attendedClasses">Classes Attended (As of Today)</label>
-        <input type="number" id="attendedClasses" placeholder="e.g. 75">
+        <input type="number" id="attendedClasses" placeholder="e.g. 75" inputmode="numeric">
     </div>
 
     <button id="calcBtn" class="btn calc-btn">Calculate Attendance</button>
     <div id="errorBox" class="error-message"></div>
 
     <div id="resultBox" class="result-section">
-        <label style="color:#64748b; font-weight:700; font-size: 0.75rem; letter-spacing: 0.05em;">CURRENT ATTENDANCE</label>
+        <label style="color:#64748b; font-weight:700; font-size: 0.7rem; letter-spacing: 0.05em;">CURRENT ATTENDANCE</label>
         <div id="displayPct" class="percentage">0.00%</div>
         <div id="displayStatus" class="status-message"></div>
         
@@ -320,7 +339,7 @@
         <h3 class="panel-title">📈 Attendance Recovery</h3>
         <div class="input-group">
             <label for="recoveryClassesPerDay">Number of Classes Held Per Day</label>
-            <input type="number" id="recoveryClassesPerDay" value="6" min="1">
+            <input type="number" id="recoveryClassesPerDay" value="6" min="1" inputmode="numeric">
         </div>
         <button id="runRecoveryBtn" class="btn calc-btn">Calculate Recovery Timeline</button>
         
@@ -328,17 +347,17 @@
     </div>
 
     <div id="leavesPanel" class="panel-section" style="display:none;">
-        <h3 class="panel-title" style="border-bottom: 1px solid var(--border); padding-bottom:12px;">📅 Leave Planning</h3>
+        <h3 class="panel-title" style="border-bottom: 1px solid var(--border); padding-bottom:10px;">📅 Leave Planning</h3>
         
         <div class="input-group">
             <label for="leaveClassesPerDay">Number of Classes Held Per Day</label>
-            <input type="number" id="leaveClassesPerDay" value="6" min="1">
+            <input type="number" id="leaveClassesPerDay" value="6" min="1" inputmode="numeric">
         </div>
 
         <div class="input-group">
             <label>Select Leave Input Type</label>
             <select id="leaveMethod">
-                <option value="calendar">Select Dates from Calendar (Skips Weekends)</option>
+                <option value="calendar">Select Dates from Calendar</option>
                 <option value="manual">Enter Total Days Directly</option>
             </select>
         </div>
@@ -346,34 +365,34 @@
         <div id="todayStatusGroup" class="input-group">
             <label>Have you included today in Total Classes?</label>
             <div class="toggle-container">
-                <button type="button" id="todayYesBtn" class="toggle-btn toggle-active">Yes, already included</button>
-                <button type="button" id="todayNoBtn" class="toggle-btn">No, not included yet</button>
+                <button type="button" id="todayYesBtn" class="toggle-btn toggle-active">Yes, included</button>
+                <button type="button" id="todayNoBtn" class="toggle-btn">No, not yet</button>
             </div>
         </div>
 
         <div id="manualInputGroup" class="input-group" style="display:none;">
             <label for="manualLeaveDays">Number of Working Days of Leave</label>
-            <input type="number" id="manualLeaveDays" placeholder="e.g. 3" min="0" value="0">
+            <input type="number" id="manualLeaveDays" placeholder="e.g. 3" min="0" value="0" inputmode="numeric">
         </div>
 
         <div id="calendarInputGroup">
-            <label style="font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); display:block; margin-bottom:8px;">Add Leave Windows (Unselected future days mark as attended):</label>
+            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); display:block; margin-bottom:8px;">Add Leave Windows:</label>
             <div id="leaveRowsContainer"></div>
-            <button type="button" class="add-row-btn" id="addLeaveRowBtn">+ Add Another Leave Period</button>
+            <button type="button" class="add-row-btn" id="addLeaveRowBtn">+ Add Leave Period</button>
         </div>
 
         <button id="runLeavesBtn" class="btn calc-btn">Calculate Leave Impact</button>
         
         <div id="leaveReportBox" class="report-box" style="display:none;">
-            <h4 style="margin-top:0; margin-bottom:12px; color: var(--text); font-weight: 700;">📊 Projections Report (Goal: 75%)</h4>
-            <div id="daysCountSummary" style="font-weight: 600; color: var(--text); margin-bottom: 8px; font-size: 0.95rem;"></div>
+            <h4 style="margin-top:0; margin-bottom:10px; color: var(--text); font-weight: 700; font-size:0.95rem;">📊 Projections Report (Goal: 75%)</h4>
+            <div id="daysCountSummary" style="font-weight: 600; color: var(--text); margin-bottom: 6px; font-size: 0.85rem;"></div>
             <div id="projectedAttendanceStr" class="highlight-box"></div>
-            <div id="leaveRecoveryStrategyStr" class="highlight-box" style="border-left-color: var(--warning); margin-top: 16px;"></div>
+            <div id="leaveRecoveryStrategyStr" class="highlight-box" style="border-left-color: var(--warning); margin-top: 12px;"></div>
         </div>
     </div>
 
     <div class="credits-footer">
-        Developed by: <strong>Dixansh Yadav</strong> &bull; 🏗️ <em>Branch: Civil Engineering</em>
+        Developed by: <strong>Dixansh Yadav</strong> &bull; <em>Branch: Civil Engineering</em>
     </div>
 </div>
 
@@ -411,15 +430,15 @@
         row.className = 'leave-row';
         
         row.innerHTML = `
-            <div style="display:flex; flex-direction:column;">
-                <span style="font-size:0.75rem; font-weight:600; color:#64748b; margin-bottom:4px;">From</span>
+            <div>
+                <span style="font-size:0.7rem; font-weight:600; color:#64748b; display:block; margin-bottom:2px;">From</span>
                 <input type="date" class="row-start-date" value="${currentSystemToday}" min="${currentSystemToday}">
             </div>
-            <div style="display:flex; flex-direction:column;">
-                <span style="font-size:0.75rem; font-weight:600; color:#64748b; margin-bottom:4px;">To</span>
+            <div>
+                <span style="font-size:0.7rem; font-weight:600; color:#64748b; display:block; margin-bottom:2px;">To</span>
                 <input type="date" class="row-end-date" value="${currentSystemToday}" min="${currentSystemToday}">
             </div>
-            <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()">✕</button>
+            <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()">Remove Period ✕</button>
         `;
         
         const fromInput = row.querySelector('.row-start-date');
